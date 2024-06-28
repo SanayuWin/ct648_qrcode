@@ -7,8 +7,6 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend/src:/app/src
-    environment:
-      NODE_ENV: development
       
   backend:
     build: ./backend

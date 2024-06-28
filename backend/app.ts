@@ -6,10 +6,36 @@ import { generateAccessCode, verifyQRCode } from "./controllers/qrcode";
 import { dataEmployee } from "./controllers/data";
 import { verifyTokenAuthorized } from "./utils/jwt";
 
+
+
+function handleCors(req: Request, response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("Access-Control-Allow-Origin", "*");
+  headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return new Response(response.body, {
+    ...response,
+    headers,
+  });
+}
+
+
 Bun.serve({
   port: PORT,
   fetch: async (req) => {
     const url = new URL(req.url);
+
+    if (req.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+      });
+    }
+
     let response;
     switch (url.pathname) {
       case "/api/login":
@@ -73,7 +99,8 @@ Bun.serve({
         response = new Response("Not Found", { status: 404 });
         break;
     }
-    return response;
+    // return response;
+    return handleCors(req, response);
   },
   error(error) {
     return new Response(`<pre>${error}\n${error.stack}</pre>`, {

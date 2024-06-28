@@ -27,6 +27,12 @@ const Login = () => {
       // Handle successful login response
       const jsonData = await response.json();
       console.log('Login successful:', jsonData);
+      // Save token to session storage
+      sessionStorage.setItem('token', jsonData.token);
+
+      // Redirect to '/'
+      window.location.href = '/';
+      
       // Redirect or handle success as needed
     } catch (error) {
       console.error('Error logging in:', error);
