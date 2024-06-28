@@ -1,0 +1,37 @@
+version: '3.3'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+    environment:
+      NODE_ENV: development
+      
+  backend:
+    build: ./backend
+    ports:
+      - "8087:8087"
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: postgresql://myuser:mypassword@postgres:5432/webapp?sslmode=disable
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: webapp
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      TZ: Asia/Bangkok
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+volumes:
+  db:

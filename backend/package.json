@@ -1,0 +1,18 @@
+{
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "bun app.ts",
+    "dev": "bun --hot app.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.5.45",
+    "pg": "^8.7.1",
+    "qrcode": "^1.5.3"
+  }
+}
